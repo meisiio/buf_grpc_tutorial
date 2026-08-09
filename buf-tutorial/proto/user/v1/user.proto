@@ -22,4 +22,6 @@ message GetUserResponse {
 service UserService {
   // A simple Unary RPC (Request -> Response)
   rpc GetUser(GetUserRequest) returns (GetUserResponse);
+  rpc ListUsers(ListUserRequest) returns (stream User);
 }
+message ListUserRequest {}

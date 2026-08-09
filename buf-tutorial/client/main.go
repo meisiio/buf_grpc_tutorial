@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"io"
 	"log"
 	"time"
 
@@ -44,4 +45,20 @@ func main() {
 		// Notice how gRPC translates the "NotFound" status code directly to an error here
 		log.Printf("Expected Error Received: %v", err2)
 	}
+	stream, err := client.ListUsers(context.Background(), &userv1.ListUserRequest{})
+	if err != nil {
+		log.Fatalf("could not call ListUssers: %v", err)
+	}
+	for {
+		user, err := stream.Recv()
+		if err == io.EOF {
+			log.Println("Stream finished cleanly!")
+			break
+		}
+		if err != nil {
+			log.Fatalf("Error receiving stream message: %v", err)
+		}
+		log.Printf("Streamed User: ID=%d, Name=%s", user.GetId(), user.GetName())
+	}
+
 }

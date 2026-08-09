@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net"
 	"time"
@@ -37,6 +38,21 @@ func (s *server) GetUser(ctx context.Context, req *userv1.GetUserRequest) (*user
 			Email: "meisam@example.com",
 		},
 	}, nil
+}
+func (S *server) ListUsers(req *userv1.ListUserRequest, stream userv1.UserService_ListUsersServer) error {
+	for i := 1; i <= 5; i++ {
+		user := &userv1.User{
+			Id:    int32(i),
+			Name:  "Streamy User",
+			Email: fmt.Sprintf("streami%d@example.com", i),
+		}
+		if err := stream.Send(user); err != nil {
+			return err
+		}
+		time.Sleep(500 * time.Millisecond)
+	}
+	return nil
+
 }
 func LoggingInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 	start_time := time.Now()
