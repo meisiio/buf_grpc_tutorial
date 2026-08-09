@@ -1,5 +1,5 @@
 syntax = "proto3";
-
+import "google/api/annotations.proto";
 package user.v1;
 
 option go_package = "github.com/meisam/buf-tutorial/gen/go/proto/user/v1";
@@ -21,7 +21,11 @@ message GetUserResponse {
 // The gRPC Service Definition
 service UserService {
   // A simple Unary RPC (Request -> Response)
-  rpc GetUser(GetUserRequest) returns (GetUserResponse);
+  rpc GetUser(GetUserRequest) returns (GetUserResponse){
+    option (google.api.http) = {
+      get: "/v1/users/{id}"
+    };
+  }
   rpc ListUsers(ListUserRequest) returns (stream User);
 }
 message ListUserRequest {}

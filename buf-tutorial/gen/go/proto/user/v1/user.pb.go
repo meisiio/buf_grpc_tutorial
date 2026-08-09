@@ -7,6 +7,7 @@
 package v1
 
 import (
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -209,7 +210,7 @@ var File_proto_user_v1_user_proto protoreflect.FileDescriptor
 
 const file_proto_user_v1_user_proto_rawDesc = "" +
 	"\n" +
-	"\x18proto/user/v1/user.proto\x12\auser.v1\"@\n" +
+	"\x18proto/user/v1/user.proto\x12\auser.v1\x1a\x1cgoogle/api/annotations.proto\"@\n" +
 	"\x04User\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
@@ -218,9 +219,9 @@ const file_proto_user_v1_user_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\"4\n" +
 	"\x0fGetUserResponse\x12!\n" +
 	"\x04user\x18\x01 \x01(\v2\r.user.v1.UserR\x04user\"\x11\n" +
-	"\x0fListUserRequest2\x83\x01\n" +
-	"\vUserService\x12<\n" +
-	"\aGetUser\x12\x17.user.v1.GetUserRequest\x1a\x18.user.v1.GetUserResponse\x126\n" +
+	"\x0fListUserRequest2\x9b\x01\n" +
+	"\vUserService\x12T\n" +
+	"\aGetUser\x12\x17.user.v1.GetUserRequest\x1a\x18.user.v1.GetUserResponse\"\x16\x82\xd3\xe4\x93\x02\x10\x12\x0e/v1/users/{id}\x126\n" +
 	"\tListUsers\x12\x18.user.v1.ListUserRequest\x1a\r.user.v1.User0\x01B5Z3github.com/meisam/buf-tutorial/gen/go/proto/user/v1b\x06proto3"
 
 var (
