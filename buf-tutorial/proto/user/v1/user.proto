@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package user.v1;
+
+option go_package = "github.com/meisam/buf-tutorial/gen/go/proto/user/v1";
+
+message User {
+  int32 id = 1;
+  string name = 2;
+  string email = 3;
+}
+
+message GetUserRequest {
+  int32 id = 1;
+}
+
+message GetUserResponse {
+  User user = 1;
+}
+
+// The gRPC Service Definition
+service UserService {
+  // A simple Unary RPC (Request -> Response)
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
+}
