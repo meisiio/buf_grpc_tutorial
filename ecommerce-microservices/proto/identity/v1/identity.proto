@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package identity.v1;
+
+option go_package = "github.com/meisam/ecommerce/gen/go/proto/identity/v1";
+
+message CreateUserRequest {
+  string email = 1;
+  string password = 2;
+  string full_name = 3;
+}
+
+message CreateUserResponse {
+  int32 user_id = 1;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string jwt_token = 1;
+}
+
+service IdentityService {
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+  rpc Login(LoginRequest) returns (LoginResponse);
+}
