@@ -11,6 +11,7 @@ import (
 )
 
 type OrderEvent struct {
+	TraceID string `json:"trace_id"`
 	OrderID int    `json:"order_id"`
 	Status  string `json:"status"`
 }
@@ -60,13 +61,13 @@ func main() {
 
 			err := json.Unmarshal(msg.Body, &event)
 			if err != nil {
-				log.Printf("failed to fetch the json :%v", err)
+				log.Printf("[TraceID : %s ]failed to fetch the json :%v", event.TraceID, err)
 				continue
 			}
 
-			log.Printf("Inventory System processing order %d with status %s", event.OrderID, event.Status)
+			log.Printf("[TraceID : %s ] Inventory System processing order %d with status %s", event.TraceID, event.OrderID, event.Status)
 
-			log.Printf("Uh oh! Item for order %d is OUT OF STOCK!", event.OrderID)
+			log.Printf("[TraceID : %s ]Uh oh! Item for order %d is OUT OF STOCK!", event.TraceID, event.OrderID)
 
 			failureBody := fmt.Sprintf(`{"order_id": %d, "reason": "out_of_stock"}`, event.OrderID)
 
@@ -81,9 +82,9 @@ func main() {
 					Body:        []byte(failureBody),
 				})
 			if err != nil {
-				log.Printf("failed to publish a message : %v", err)
+				log.Printf("[TraceID : %s ]failed to publish a message : %v", event.TraceID, err)
 			} else {
-				log.Printf("Successfully published failure event for order %d", event.OrderID)
+				log.Printf("[TraceID : %s ]Successfully published failure event for order %d", event.TraceID, event.OrderID)
 			}
 		}
 	}()

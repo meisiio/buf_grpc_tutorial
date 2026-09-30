@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -11,6 +12,7 @@ import (
 )
 
 type OrderEvent struct {
+	TraceID string `json:"trace_id"`
 	OrderID int    `json:"order_id"`
 	Reason  string `json:"reason"`
 	Status  string `json:"status"`
@@ -75,10 +77,10 @@ func main() {
 			var failureEvent OrderEvent
 			err := json.Unmarshal(msg.Body, &failureEvent)
 			if err != nil {
-				log.Printf("failed to unmarshal the event message %v", err)
+				log.Printf("[TraceID : %s ]failed to unmarshal the event message %v", failureEvent.TraceID, err)
 				continue
 			}
-			log.Printf("COMPENSATING TRANSACTION: Marking order as CANCELLED! Refunding customer for order id: %d with reason: %s", failureEvent.OrderID, failureEvent.Reason)
+			log.Printf("[TraceID : %s ]COMPENSATING TRANSACTION: Marking order as CANCELLED! Refunding customer for order id: %d with reason: %s", failureEvent.TraceID, failureEvent.OrderID, failureEvent.Reason)
 		}
 	}()
 
@@ -86,7 +88,9 @@ func main() {
 	http.HandleFunc("/buy", func(w http.ResponseWriter, r *http.Request) {
 		// Generate a random dynamic Order ID
 		fakeID := int(time.Now().Unix())
+		fakeTraceID := fmt.Sprintf("Trace-%d", time.Now().UnixNano())
 		fakeOrder := OrderEvent{
+			TraceID: fakeTraceID,
 			OrderID: fakeID,
 			Status:  "PAID",
 		}
