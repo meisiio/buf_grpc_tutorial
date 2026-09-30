@@ -8,3 +8,5 @@ require (
 )
 
 require github.com/rabbitmq/amqp091-go v1.14.0
+
+require github.com/sony/gobreaker/v2 v2.4.0 // indirect
