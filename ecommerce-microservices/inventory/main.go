@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
 	"encoding/json"
 
@@ -18,7 +19,11 @@ type OrderEvent struct {
 
 func main() {
 	//connect to the rabbitmq
-	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+	rabbitURL := os.Getenv("RABBITMQ_URL")
+	if rabbitURL == "" {
+		rabbitURL = "amqp://guest:guest@localhost:5672/"
+	}
+	conn, err := amqp.Dial(rabbitURL)
 	if err != nil {
 		log.Fatalf("rabitmq failed to open and opening encountered failure errors : %v", err)
 	}

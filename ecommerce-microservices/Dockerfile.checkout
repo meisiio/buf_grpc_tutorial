@@ -1,0 +1,29 @@
+# Stage 1: The Builder (Contains all Go tools, but is very heavy)
+FROM golang:alpine AS builder
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy the go.mod and go.sum files first to cache dependencies
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Copy the rest of your source code
+COPY . .
+
+# TODO: Write the command to compile your checkout binary!
+# The output file should be named "checkout-service"
+RUN go build -o checkout-service ./checkout/main.go
+
+# Stage 2: The Final Image (Extremely lightweight, NO Go tools installed!)
+FROM alpine:latest
+WORKDIR /root/
+
+# TODO: Copy the compiled "checkout-service" binary from the "builder" stage into this final image!
+COPY --from=builder /app/checkout-service .
+
+# Expose the HTTP port the checkout service listens on
+EXPOSE 8082
+
+# Run the binary!
+CMD ["./checkout-service"]
